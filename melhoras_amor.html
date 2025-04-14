@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Melhoras Amor!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: pink url('https://i.pinimg.com/originals/56/8f/97/568f972aeb6fc0d6bb3e3b7fd90e0933.gif') repeat;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .container {
+      background-color: #fff0f5;
+      border: 4px dotted #ff69b4;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 90%;
+      box-shadow: 0 0 20px #ffb6c1;
+      position: relative;
+      z-index: 1;
+    }
+    h1 {
+      font-size: 2em;
+      color: #ff1493;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px #fff;
+    }
+    .mensagem {
+      font-size: 1.5em;
+      color: black;
+    }
+    .decoracao {
+      position: absolute;
+      width: 60px;
+      z-index: 2;
+    }
+    .pucca {
+      top: -30px;
+      left: -30px;
+    }
+    .hello {
+      bottom: -30px;
+      right: -30px;
+    }
+    .glitter {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      .mensagem {
+        font-size: 1.2em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/11/17/audio_64834a8dc3.mp3?filename=soft-piano-melody-12671.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
+  <canvas class="glitter" id="glitter"></canvas>
+  <div class="container">
+    <h1>Melhoras Amor!</h1>
+    <p class="mensagem">Que o seu dedo queimado fique melhor!!</p>
+    <img class="decoracao pucca" src="https://media.tenor.com/R9u_qZQ_EYkAAAAj/pucca.gif" alt="Pucca">
+    <img class="decoracao hello" src="https://media.tenor.com/qYkQjkaDeU8AAAAj/hello-kitty.gif" alt="Hello Kitty">
+  </div>
+  <script>
+    const canvas = document.getElementById('glitter');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    function createParticle() {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2 + 1,
+        speedY: Math.random() * 0.5 + 0.5,
+        alpha: Math.random()
+      };
+    }
+    function updateParticles() {
+      for (let p of particles) {
+        p.y += p.speedY;
+        if (p.y > canvas.height) {
+          p.y = 0;
+          p.x = Math.random() * canvas.width;
+        }
+      }
+    }
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let p of particles) {
+        ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    function animate() {
+      updateParticles();
+      drawParticles();
+      requestAnimationFrame(animate);
+    }
+    for (let i = 0; i < 100; i++) {
+      particles.push(createParticle());
+    }
+    animate();
+  </script>
+</body>
+</html>
